@@ -4,17 +4,14 @@
   "scripts": {
     "build": "nwb build-react-app",
     "clean": "nwb clean-app",
-    "start": "nwb serve-react-app",
-    "test": "nwb test-react",
-    "test:coverage": "nwb test-react --coverage",
-    "test:watch": "nwb test-react --server"
+    "start": "nwb serve-react-app"
   },
   "dependencies": {
     "react": "^16.2.0",
     "react-dom": "^16.2.0"
   },
   "devDependencies": {
-    "nwb": "0.21.x"
+    "nwb": "^0.21.4"
   },
   "license": "MIT"
 }

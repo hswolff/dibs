@@ -1,7 +1,14 @@
 {
-    "name": "dibs",
-    "private": true,
-    "scripts": {
-        "start": "node server/server.js"
-    }
+  "name": "dibs",
+  "private": true,
+  "scripts": {
+    "client":
+      "./client/node_modules/.bin/nwb serve-react-app client/src/index.js",
+    "server": "nodemon server/server.js",
+    "start": "npm-run-all --parallel client server"
+  },
+  "devDependencies": {
+    "nodemon": "^1.14.11",
+    "npm-run-all": "^4.1.2"
+  }
 }
