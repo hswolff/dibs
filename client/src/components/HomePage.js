@@ -10,7 +10,16 @@ import CreateNewDib from './CreateNewDib';
 import DibCell from './DibCell';
 
 class HomePage extends Component {
+  state = {
+    showCreateNew: false,
+  };
+
+  onViewerStateChange = () => {
+    this.setState({ showCreateNew: false });
+  };
+
   render() {
+    const { showCreateNew } = this.state;
     const { dibs, loading } = this.props;
 
     if (loading) {
@@ -25,10 +34,22 @@ class HomePage extends Component {
         <Header>
           <Title>Got Dibs?</Title>
           <HeaderRight>
-            <SignIn onSuccess={() => this.forceUpdate()} />
+            {isSignedIn && (
+              <ShowCreateNew
+                title="Create new Dib"
+                onClick={() =>
+                  this.setState(state => ({
+                    showCreateNew: !state.showCreateNew,
+                  }))
+                }
+              >
+                +
+              </ShowCreateNew>
+            )}
+            <SignIn onChange={this.onViewerStateChange} />
           </HeaderRight>
         </Header>
-        {isSignedIn && <CreateNewDib />}
+        {isSignedIn && showCreateNew && <CreateNewDib />}
         {dibs.map(dib => (
           <DibCell
             key={dib.id}
@@ -58,7 +79,20 @@ const Title = styled('h1')`
   font-weight: 800;
 `;
 
-const HeaderRight = styled('div')``;
+const HeaderRight = styled('div')`
+  display: flex;
+  align-items: baseline;
+`;
+
+const ShowCreateNew = styled('div')`
+  cursor: pointer;
+  padding: 5px 15px;
+  background: #ddd;
+  border-radius: 4px;
+  box-shadow: 0 1px 1px #525252;
+  margin: 0 10px;
+  font-weight: 800;
+`;
 
 const DIBS_QUERY = gql`
   query AllDibs {

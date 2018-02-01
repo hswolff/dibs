@@ -27,13 +27,13 @@ export default class SignIn extends Component {
     viewer.signIn(this.state.username);
     this.setState({ error: false, username: '' });
 
-    this.props.onSuccess();
+    this.props.onChange();
   };
 
   signOut = e => {
     e.preventDefault();
     viewer.signOut();
-    this.props.onSuccess();
+    this.props.onChange();
   };
 
   render() {
@@ -69,7 +69,7 @@ export default class SignIn extends Component {
 }
 
 const Form = styled('form')`
-  border: 1px solid ${props => (props.error ? 'red' : 'black')};
+  box-shadow: 0 1px 2px ${props => (props.error ? 'red' : '#525252')};
   border-radius: 4px;
   padding: 5px;
 `;
