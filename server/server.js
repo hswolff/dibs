@@ -1,18 +1,31 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { graphqlExpress, graphiqlExpress } = require('apollo-server-express');
+const db = require('./db');
 const executableSchema = require('./graphql');
 
-const app = express();
+const PORT = 8080;
 
-app.use(
-  '/graphql',
-  bodyParser.json(),
-  graphqlExpress({ schema: executableSchema })
-);
+async function createServer() {
+  const app = express();
 
-app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
+  try {
+    await db.connect();
+  } catch (error) {
+    console.error('Unable to connect to mongodb', error);
+  }
 
-app.listen(8080, () => {
-  console.log('Server ready at http://localhost:8080/');
-});
+  app.use(
+    '/graphql',
+    bodyParser.json(),
+    graphqlExpress({ schema: executableSchema, context: { Models: db.Models } })
+  );
+
+  app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
+
+  app.listen(PORT, () => {
+    console.log(`Server ready at http://localhost:${PORT}/`);
+  });
+}
+
+createServer();
