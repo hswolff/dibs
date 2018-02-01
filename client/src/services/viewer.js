@@ -5,7 +5,7 @@ const viewer = {
     localStorage.setItem(key, username);
   },
 
-  signOut(username) {
+  signOut() {
     localStorage.removeItem(key);
   },
 
