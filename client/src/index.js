@@ -3,6 +3,11 @@ import './index.css';
 import React from 'react';
 import { render } from 'react-dom';
 
-import App from './App';
+import Typography from 'typography';
+import theme from 'typography-theme-moraga';
+const typography = new Typography(theme);
+typography.injectStyles();
 
-render(<App />, document.querySelector('#app'));
+import HomePage from './components/HomePage';
+
+render(<HomePage />, document.querySelector('#app'));
