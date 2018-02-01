@@ -7,9 +7,13 @@
     "start": "nwb serve-react-app"
   },
   "dependencies": {
+    "apollo-client-preset": "^1.0.6",
     "babel-plugin-emotion": "^8.0.12",
     "emotion": "^8.0.12",
+    "graphql": "^0.12.3",
+    "graphql-tag": "^2.6.1",
     "react": "^16.2.0",
+    "react-apollo": "^2.0.4",
     "react-dom": "^16.2.0",
     "react-emotion": "^8.0.12",
     "typography": "^0.16.6",

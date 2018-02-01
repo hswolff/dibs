@@ -8,6 +8,14 @@ import theme from 'typography-theme-moraga';
 const typography = new Typography(theme);
 typography.injectStyles();
 
+import { ApolloProvider } from 'react-apollo';
+import createApolloClient from './createApolloClient';
+
 import HomePage from './components/HomePage';
 
-render(<HomePage />, document.querySelector('#app'));
+render(
+  <ApolloProvider client={createApolloClient()}>
+    <HomePage />
+  </ApolloProvider>,
+  document.querySelector('#app')
+);
