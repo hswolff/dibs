@@ -3,20 +3,23 @@ import styled from 'react-emotion';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
+import viewer from '../services/viewer';
+
 class CreateNewDib extends Component {
   state = {
     title: 'big',
-    creator: 'creator',
     error: null,
   };
 
   createNew = async () => {
     this.setState({ error: null });
 
+    const viewerUsername = viewer.getUsername();
+
     try {
       await this.props.createDib({
         title: this.state.title,
-        creator: this.state.creator,
+        creator: viewerUsername,
       });
     } catch (error) {
       this.setState({ error: error.message });
@@ -35,11 +38,6 @@ class CreateNewDib extends Component {
         <input
           value={title}
           onChange={e => this.setState({ title: e.target.value })}
-        />
-        Creator:{' '}
-        <input
-          value={creator}
-          onChange={e => this.setState({ creator: e.target.value })}
         />
         <Create onClick={this.createNew}>Create New Dib</Create>
       </Container>

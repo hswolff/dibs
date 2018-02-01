@@ -14,7 +14,7 @@ class DibCell extends Component {
     try {
       await this.props.callDibs({
         id: this.props.id,
-        user: this.inputRef.value,
+        user: this.props.viewer,
       });
     } catch (error) {
       this.setState({ error: error.message });
@@ -23,7 +23,15 @@ class DibCell extends Component {
 
   render() {
     const { error } = this.state;
-    const { id, title, creator, createdAt, updatedAt, claimed } = this.props;
+    const {
+      canBeClaimed,
+      id,
+      title,
+      creator,
+      createdAt,
+      updatedAt,
+      claimed,
+    } = this.props;
 
     const isClaimed = claimed.user != null;
 
@@ -31,10 +39,10 @@ class DibCell extends Component {
       <Container claimed={isClaimed}>
         {error}
         <div>{title}</div>
-        <ClaimedContainer onClick={this.callDibs}>
+        <div>{creator}</div>
+        <ClaimedContainer onClick={this.callDibs} disabled={!canBeClaimed}>
           {isClaimed ? 'Claimed!' : 'Dibs?'}
         </ClaimedContainer>
-        <input ref={r => (this.inputRef = r)} />
         {isClaimed && (
           <div>
             Claimed by <b>{claimed.user}</b> at <b>{claimed.time}</b>

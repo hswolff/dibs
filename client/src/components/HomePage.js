@@ -1,12 +1,20 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import styled from 'react-emotion';
 
+import viewer from '../services/viewer';
+
+import SignIn from './SignIn';
 import CreateNewDib from './CreateNewDib';
 import DibCell from './DibCell';
 
 class HomePage extends Component {
+  signOut = () => {
+    viewer.signOut();
+    this.forceUpdate();
+  };
+
   render() {
     const { dibs, loading } = this.props;
 
@@ -14,11 +22,34 @@ class HomePage extends Component {
       return null;
     }
 
+    const isSignedIn = viewer.isSignedIn();
+    const viewerUsername = viewer.getUsername();
+
     return (
       <Container>
         <h1 css={{ color: 'red', fontSize: '33px' }}>Got Dibs?</h1>
-        <CreateNewDib />
-        {dibs.map(dib => <DibCell key={dib.id} {...dib} />)}
+
+        {isSignedIn ? (
+          <Fragment>
+            <div>
+              Viewer: <b>{viewerUsername}</b>
+              <button onClick={this.signOut}>Sign Out</button>
+            </div>
+            <CreateNewDib />
+          </Fragment>
+        ) : (
+          <Fragment>
+            <SignIn onSuccess={() => this.forceUpdate()} />
+          </Fragment>
+        )}
+        {dibs.map(dib => (
+          <DibCell
+            key={dib.id}
+            canBeClaimed={isSignedIn}
+            viewer={viewerUsername}
+            {...dib}
+          />
+        ))}
       </Container>
     );
   }
