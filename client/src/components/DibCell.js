@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'react-emotion';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
+import RelativeTime from './RelativeTime';
 
 class DibCell extends Component {
   state = {
@@ -24,22 +25,24 @@ class DibCell extends Component {
   render() {
     const { error } = this.state;
     const {
+      viewer,
       canBeClaimed,
-      id,
       title,
       creator,
       createdAt,
-      updatedAt,
       claimed,
     } = this.props;
+
+    const isSignedIn = viewer != null;
 
     const isClaimed = claimed.user != null;
 
     return (
       <Container claimed={isClaimed}>
         {error}
-        <div>{title}</div>
-        <div>{creator}</div>
+        <div>{creator} is offering</div>
+        <h1>{title}</h1>
+        <RelativeTime liveUpdate={!isClaimed && isSignedIn} time={createdAt} />
         <ClaimedContainer onClick={this.callDibs} disabled={!canBeClaimed}>
           {isClaimed ? 'Claimed!' : 'Dibs?'}
         </ClaimedContainer>
