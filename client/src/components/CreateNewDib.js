@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import styled from 'react-emotion';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
@@ -7,11 +7,13 @@ import viewer from '../services/viewer';
 
 class CreateNewDib extends Component {
   state = {
-    title: 'big',
+    title: '',
     error: null,
   };
 
-  createNew = async () => {
+  createNew = async e => {
+    e.preventDefault();
+
     this.setState({ error: null });
 
     const viewerUsername = viewer.getUsername();
@@ -21,38 +23,69 @@ class CreateNewDib extends Component {
         title: this.state.title,
         creator: viewerUsername,
       });
+
+      this.setState({ title: '' });
+
+      this.props.onSuccess();
     } catch (error) {
       this.setState({ error: error.message });
     }
   };
 
   render() {
-    const { error, title, creator } = this.state;
-    const { id, createdAt, updatedAt, claimed } = this.props;
+    const { error, title } = this.state;
 
     return (
-      <Container>
+      <Fragment>
         {error}
-        <div>Create New Dib</div>
-        Title:{' '}
-        <input
-          value={title}
-          onChange={e => this.setState({ title: e.target.value })}
-        />
-        <Create onClick={this.createNew}>Create New Dib</Create>
-      </Container>
+        <Container onSubmit={this.createNew}>
+          <Left>
+            <Textarea
+              tabIndex={1}
+              placeholder="Create New Dib"
+              value={title}
+              onChange={e => this.setState({ title: e.target.value })}
+            />
+          </Left>
+          <Right>
+            <Button onClick={this.createNew}>Create New Dib</Button>
+          </Right>
+        </Container>
+      </Fragment>
     );
   }
 }
 
-const Container = styled('div')`
-  border: 1px solid black;
-  border-radius: 4px;
+const Container = styled('form')`
+  border-bottom: 4px solid #b1b1b1;
   margin: 20px 0;
-  padding: 20px 10px;
+  padding: 20px 0 0;
+  display: flex;
 `;
 
-const Create = styled('button')``;
+const Left = styled('div')`
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+const Textarea = styled('textarea')`
+  resize: vertical;
+  padding: 10px;
+  font-size: 26px;
+`;
+
+const Right = styled('div')`
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+const Button = styled('button')`
+  height: 100%;
+`;
 
 const CREATE_MUTATION = gql`
   mutation CreateQuery($title: String!, $creator: String!) {

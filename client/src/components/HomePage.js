@@ -49,7 +49,14 @@ class HomePage extends Component {
             <SignIn onChange={this.onViewerStateChange} />
           </HeaderRight>
         </Header>
-        {isSignedIn && showCreateNew && <CreateNewDib />}
+        {isSignedIn &&
+          showCreateNew && (
+            <CreateNewDib
+              onSuccess={() => {
+                this.setState({ showCreateNew: false });
+              }}
+            />
+          )}
         {dibs.map(dib => (
           <DibCell
             key={dib.id}
