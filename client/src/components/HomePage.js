@@ -10,11 +10,6 @@ import CreateNewDib from './CreateNewDib';
 import DibCell from './DibCell';
 
 class HomePage extends Component {
-  signOut = () => {
-    viewer.signOut();
-    this.forceUpdate();
-  };
-
   render() {
     const { dibs, loading } = this.props;
 
@@ -27,21 +22,13 @@ class HomePage extends Component {
 
     return (
       <Container>
-        <h1 css={{ color: 'red', fontSize: '33px' }}>Got Dibs?</h1>
-
-        {isSignedIn ? (
-          <Fragment>
-            <div>
-              Viewer: <b>{viewerUsername}</b>
-              <button onClick={this.signOut}>Sign Out</button>
-            </div>
-            <CreateNewDib />
-          </Fragment>
-        ) : (
-          <Fragment>
+        <Header>
+          <Title>Got Dibs?</Title>
+          <HeaderRight>
             <SignIn onSuccess={() => this.forceUpdate()} />
-          </Fragment>
-        )}
+          </HeaderRight>
+        </Header>
+        {isSignedIn && <CreateNewDib />}
         {dibs.map(dib => (
           <DibCell
             key={dib.id}
@@ -57,8 +44,21 @@ class HomePage extends Component {
 
 const Container = styled('main')`
   width: 600px;
-  margin: 0 auto;
+  margin: 20px auto;
 `;
+
+const Header = styled('header')`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const Title = styled('h1')`
+  font-size: 42px;
+  font-weight: 800;
+`;
+
+const HeaderRight = styled('div')``;
 
 const DIBS_QUERY = gql`
   query AllDibs {

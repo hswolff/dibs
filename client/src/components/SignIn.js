@@ -1,27 +1,88 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
+import styled from 'react-emotion';
 import viewer from '../services/viewer';
 
 export default class SignIn extends Component {
   state = {
     username: '',
+    error: false,
   };
 
-  signIn = () => {
+  onSubmit = () => {
+    if (viewer.isSignedIn()) {
+      this.signOut();
+    } else {
+      this.signOut();
+    }
+  };
+
+  signIn = e => {
+    e.preventDefault();
+
+    if (this.state.username === '') {
+      this.setState({ error: true });
+      return;
+    }
+
     viewer.signIn(this.state.username);
+    this.setState({ error: false, username: '' });
+
+    this.props.onSuccess();
+  };
+
+  signOut = e => {
+    e.preventDefault();
+    viewer.signOut();
     this.props.onSuccess();
   };
 
   render() {
-    const { username } = this.state;
+    const { username, error } = this.state;
+    const viewerUsername = viewer.getUsername();
+    const isSignedIn = viewer.isSignedIn();
+
     return (
-      <form onSubmit={this.signIn}>
-        Create a username!
-        <input
-          onChange={e => this.setState({ username: e.target.value })}
-          value={username}
-        />
-        <button onClick={this.signIn}>Sign In</button>
-      </form>
+      <Form onSubmit={this.onSubmit} error={error}>
+        {isSignedIn ? (
+          <Fragment>
+            <Viewer>{viewerUsername}</Viewer>
+            <Button tabIndex={0} onClick={this.signOut}>
+              Sign Out
+            </Button>
+          </Fragment>
+        ) : (
+          <Fragment>
+            <Input
+              tabIndex={0}
+              placeholder="Create a username"
+              onChange={e =>
+                this.setState({ username: e.target.value, error: false })
+              }
+              value={username}
+            />
+            <Button onClick={this.signIn}>Sign In</Button>
+          </Fragment>
+        )}
+      </Form>
     );
   }
 }
+
+const Form = styled('form')`
+  border: 1px solid ${props => (props.error ? 'red' : 'black')};
+  border-radius: 4px;
+  padding: 5px;
+`;
+
+const Input = styled('input')`
+  border: 0;
+`;
+
+const Button = styled('button')`
+  border-radius: 4px;
+`;
+
+const Viewer = styled('span')`
+  display: inline-block;
+  margin: 0 10px 0 5px;
+`;
