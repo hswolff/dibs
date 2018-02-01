@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import styled from 'react-emotion';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
@@ -38,32 +38,82 @@ class DibCell extends Component {
     const isClaimed = claimed.user != null;
 
     return (
-      <Container claimed={isClaimed}>
+      <Fragment>
         {error}
-        <div>{creator} is offering</div>
-        <h1>{title}</h1>
-        <RelativeTime liveUpdate={!isClaimed && isSignedIn} time={createdAt} />
-        <ClaimedContainer onClick={this.callDibs} disabled={!canBeClaimed}>
-          {isClaimed ? 'Claimed!' : 'Dibs?'}
-        </ClaimedContainer>
-        {isClaimed && (
-          <div>
-            Claimed by <b>{claimed.user}</b> at <b>{claimed.time}</b>
-          </div>
-        )}
-      </Container>
+        <Container claimed={isClaimed}>
+          <Left claimed={isClaimed}>
+            <Creator>
+              <b>{creator}</b> is offering
+            </Creator>
+            <Title>{title}</Title>
+            <RelativeTime
+              liveUpdate={!isClaimed && isSignedIn}
+              time={createdAt}
+            />
+          </Left>
+          <Right>
+            <ClaimedButton
+              onClick={this.callDibs}
+              claimed={isClaimed}
+              disabled={!canBeClaimed || isClaimed}
+            >
+              {isClaimed ? 'Claimed!' : 'Dibs?'}
+            </ClaimedButton>
+            {isClaimed && (
+              <div>
+                <div>
+                  Claimed by <b>{claimed.user}</b>
+                </div>
+                <div>
+                  <RelativeTime time={claimed.time} />
+                </div>
+              </div>
+            )}
+          </Right>
+        </Container>
+      </Fragment>
     );
   }
 }
 
 const Container = styled('div')`
-  border: 1px solid ${props => (props.claimed ? 'red' : 'black')};
-  border-radius: 4px;
   margin: 20px 0;
-  padding: 20px 10px;
+  padding: 20px 0;
+  display: flex;
+  opacity: ${props => (props.claimed ? '0.4' : '1.0')};
 `;
 
-const ClaimedContainer = styled('button')``;
+const Left = styled('div')`
+  width: 70%;
+  border-right: 9px solid ${props => (props.claimed ? '#b1b1b1' : '#54a73f')};
+  padding-right: 20px;
+  margin-right: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+const Creator = styled('div')`
+  font-size: 0.9rem;
+`;
+
+const Title = styled('h1')`
+  margin: 0;
+`;
+
+const Right = styled('div')`
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+const ClaimedButton = styled('button')`
+  cursor: ${props => (props.claimed ? 'not-allowed' : 'pointer')};
+  height: ${props => (props.claimed ? 'auto' : '100%')};
+  width: 100%;
+  font-size: ${props => (props.claimed ? 'inherit' : '50px')};
+`;
 
 const CLAIM_MUTATION = gql`
   mutation ClaimDib($id: ID!, $user: String!) {

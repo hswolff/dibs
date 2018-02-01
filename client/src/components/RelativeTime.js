@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import timeago from 'timeago.js';
 
 export default class RelativeTime extends Component {
+  static defaultProps = {
+    liveUpdate: false,
+  };
+
   componentDidMount() {
     if (this.props.liveUpdate) {
       this.startUpdating();
