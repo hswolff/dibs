@@ -10,9 +10,17 @@ import CreateNewDib from './CreateNewDib';
 import DibCell from './DibCell';
 
 class HomePage extends Component {
+  static defaultProps = {
+    dibs: [],
+  };
+
   state = {
     showCreateNew: false,
   };
+
+  componentWillMount() {
+    this.props.subscribeToNewComments();
+  }
 
   onViewerStateChange = () => {
     this.setState({ showCreateNew: false });
@@ -101,6 +109,25 @@ const ShowCreateNew = styled('div')`
   font-weight: 800;
 `;
 
+const DIBS_SUBSCRIPTION = gql`
+  subscription OnDibChanged {
+    dibChanged {
+      type
+      dib {
+        creator
+        id
+        title
+        createdAt
+        updatedAt
+        claimed {
+          user
+          time
+        }
+      }
+    }
+  }
+`;
+
 const DIBS_QUERY = gql`
   query AllDibs {
     dibs {
@@ -118,8 +145,37 @@ const DIBS_QUERY = gql`
 `;
 
 export default graphql(DIBS_QUERY, {
-  props: ({ data: { dibs, loading } }) => ({
+  props: ({ data: { dibs, loading, subscribeToMore } }) => ({
     dibs,
     loading,
+    subscribeToNewComments: () => {
+      return subscribeToMore({
+        document: DIBS_SUBSCRIPTION,
+        updateQuery: (prev, { subscriptionData }) => {
+          if (!subscriptionData.data) {
+            return prev;
+          }
+
+          const { dib, type } = subscriptionData.data.dibChanged;
+
+          if (type === 'update') {
+            return {
+              ...prev,
+              dibs: prev.dibs.map(prevDib => {
+                if (prevDib.id === dib.id) {
+                  return dib;
+                }
+                return prevDib;
+              }),
+            };
+          }
+
+          return {
+            ...prev,
+            dibs: [dib, ...prev.dibs],
+          };
+        },
+      });
+    },
   }),
 })(HomePage);

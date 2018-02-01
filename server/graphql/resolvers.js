@@ -1,3 +1,5 @@
+const pubsub = require('./pubsub');
+
 const resolvers = {
   Query: {
     dibs: (root, opts, { Models }) => Models.Dib.find().sort('-createdAt'),
@@ -25,6 +27,11 @@ const resolvers = {
       dib.claimed.time = new Date();
 
       return dib.save();
+    },
+  },
+  Subscription: {
+    dibChanged: {
+      subscribe: () => pubsub.asyncIterator('dibChanged'),
     },
   },
 };

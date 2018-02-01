@@ -2,6 +2,7 @@ const schema = `
     type Schema {
       query: Query
       mutation: Mutation
+      subscription: Subscription
     }
 
     type Query { dibs: [Dib]! }
@@ -23,6 +24,15 @@ const schema = `
     type DibClaimed {
       user: String,
       time: String,
+    }
+
+    type DibChanged {
+      type: String!
+      dib: Dib
+    }
+
+    type Subscription {
+      dibChanged: DibChanged
     }
 `;
 
