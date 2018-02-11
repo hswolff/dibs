@@ -1,17 +1,19 @@
 {
-    "name": "dibs",
-    "private": true,
-    "scripts": {
-        "client": "cd client && npm start",
-        "server": "nodemon server/server.js",
-        "start": "npm-run-all --parallel client server",
-        "lint": "eslint client server"
-    },
-    "devDependencies": {
-        "babel-eslint": "^8.2.1",
-        "eslint": "^4.16.0",
-        "eslint-plugin-react": "^7.6.1",
-        "nodemon": "^1.14.11",
-        "npm-run-all": "^4.1.2"
-    }
+  "name": "dibs",
+  "private": true,
+  "scripts": {
+    "client": "cd client && npm start",
+    "server": "nodemon server/server.js",
+    "start": "npm-run-all --parallel client server",
+    "lint": "eslint client server",
+    "format": "prettier --write \"client/src/**/*.js\" \"server/**/*.js\""
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.2.1",
+    "eslint": "^4.16.0",
+    "eslint-plugin-react": "^7.6.1",
+    "nodemon": "^1.14.11",
+    "npm-run-all": "^4.1.2",
+    "prettier": "^1.10.2"
+  }
 }
