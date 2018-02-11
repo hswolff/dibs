@@ -43,8 +43,8 @@ mongod --port 27017 --dbpath $(pwd)/db --replSet rs0
 
 Keep the process open.
 
-#### Start app
+#### Start server and client
 
 ```
-node index.js
+npm start
 ```
