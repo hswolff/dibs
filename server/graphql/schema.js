@@ -1,10 +1,15 @@
 const schema = `
+    type Schema {
+      query: Query
+      mutation: Mutation
+    }
+
+    type Query { dibs: [Dib]! }
+
     type Mutation {
       createDib(creator: String!, title: String!): Dib
       claimDib(id: ID!, user: String!): Dib
     }
-
-    type Query { dibs: [Dib]! }
 
     type Dib {
       id: ID!,

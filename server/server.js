@@ -7,6 +7,8 @@ const executableSchema = require('./graphql');
 
 const PORT = 8080;
 
+let retryCount = 0;
+
 async function createServer() {
   const app = express();
 
@@ -14,6 +16,12 @@ async function createServer() {
     await db.connect();
   } catch (error) {
     console.error('Unable to connect to mongodb', error);
+    if (++retryCount < 3) {
+      console.log('Trying to connect to mongodb again in 1 second...');
+      setTimeout(createServer, 1000);
+      return;
+    }
+    process.exit(1);
   }
 
   app.use(

@@ -1,4 +1,7 @@
 const resolvers = {
+  Query: {
+    dibs: (root, opts, { Models }) => Models.Dib.find().sort('-createdAt'),
+  },
   Mutation: {
     createDib(root, { creator, title }, { Models }) {
       return Models.Dib.create({
@@ -23,9 +26,6 @@ const resolvers = {
 
       return dib.save();
     },
-  },
-  Query: {
-    dibs: (root, opts, { Models }) => Models.Dib.find().sort('-createdAt'),
   },
 };
 
