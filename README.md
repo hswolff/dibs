@@ -4,10 +4,12 @@ an app for offering things up and letting people call dibs on it
 
 ## Tech Used
 
-* MongoDB 3.6's Change Streams
-* Apollo GraphQL
-* React
-* emotion
+* [MongoDB 3.6's Change Streams](https://docs.mongodb.com/manual/changeStreams/)
+* [Apollo GraphQL](https://www.apollographql.com/)
+  * [Apollo Server](https://www.apollographql.com/docs/apollo-server/)
+  * [Apollo React](https://www.apollographql.com/docs/react/)
+* [React](https://reactjs.org/)
+* [emotion](https://emotion.sh/)
 
 ## Development instructions
 
