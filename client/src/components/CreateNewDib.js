@@ -5,10 +5,19 @@ import { graphql } from 'react-apollo';
 
 import viewer from '../services/viewer';
 
+const Enter = 13;
+
 class CreateNewDib extends Component {
   state = {
     title: '',
     error: null,
+  };
+
+  onKeyDown = e => {
+    // Enter on cmd+enter
+    if (e.metaKey && e.keyCode === Enter) {
+      this.createNew(e);
+    }
   };
 
   createNew = async e => {
@@ -41,10 +50,12 @@ class CreateNewDib extends Component {
         <Container onSubmit={this.createNew}>
           <Left>
             <Textarea
+              autoFocus
               tabIndex={1}
               placeholder="Create New Dib"
               value={title}
               onChange={e => this.setState({ title: e.target.value })}
+              onKeyDown={this.onKeyDown}
             />
           </Left>
           <Right>
