@@ -106,6 +106,26 @@ const CREATE_MUTATION = gql`
       title
       createdAt
       updatedAt
+      claimed {
+        user
+        time
+      }
+    }
+  }
+`;
+
+const DIBS_QUERY = gql`
+  query AllDibs {
+    dibs {
+      creator
+      id
+      title
+      createdAt
+      updatedAt
+      claimed {
+        user
+        time
+      }
     }
   }
 `;
@@ -115,6 +135,16 @@ export default graphql(CREATE_MUTATION, {
     createDib: ({ title, creator }) =>
       mutate({
         variables: { title, creator },
+        update: (proxy, { data: { createDib } }) => {
+          // Read the data from our cache for this query.
+          const data = proxy.readQuery({ query: DIBS_QUERY });
+
+          // Add our dib from the mutation to the beginning.
+          data.dibs.unshift(createDib);
+
+          // Write our data back to the cache.
+          proxy.writeQuery({ query: DIBS_QUERY, data });
+        },
       }),
   }),
 })(CreateNewDib);
