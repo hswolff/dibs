@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Models = require('./models');
 
 // Database Name
-const dbName = 'changeStreamsDemo';
+const dbName = 'dibs';
 
 // Connection URL
 const url = `mongodb://localhost:27017/${dbName}`;
