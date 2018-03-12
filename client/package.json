@@ -7,23 +7,23 @@
     "start": "nwb serve-react-app"
   },
   "dependencies": {
-    "apollo-client-preset": "^1.0.6",
-    "apollo-link-ws": "^1.0.4",
-    "babel-plugin-emotion": "^8.0.12",
-    "emotion": "^8.0.12",
-    "graphql": "^0.12.3",
-    "graphql-tag": "^2.6.1",
+    "apollo-client-preset": "^1.0.8",
+    "apollo-link-ws": "^1.0.7",
+    "babel-plugin-emotion": "^9.0.1",
+    "emotion": "^9.0.2",
+    "graphql": "^0.13.1",
+    "graphql-tag": "^2.8.0",
     "react": "^16.2.0",
     "react-apollo": "^2.0.4",
     "react-dom": "^16.2.0",
-    "react-emotion": "^8.0.12",
-    "subscriptions-transport-ws": "^0.9.5",
+    "react-emotion": "^9.0.2",
+    "subscriptions-transport-ws": "^0.9.6",
     "timeago.js": "^3.0.2",
     "typography": "^0.16.6",
     "typography-theme-moraga": "^0.15.10"
   },
   "devDependencies": {
-    "nwb": "^0.21.4"
+    "nwb": "^0.21.5"
   },
   "license": "MIT"
 }

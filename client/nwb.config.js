@@ -9,7 +9,11 @@ module.exports = {
       [
         'emotion',
         isProduction
-          ? { hoist: true, extractStatic: true }
+          ? {
+            hoist: true,
+            extractStatic: true,
+            outputDir: '',
+          }
           : { sourceMap: true, autoLabel: true },
       ],
     ],
