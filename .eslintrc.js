@@ -30,6 +30,9 @@ module.exports = {
         ecmaVersion: 8,
         sourceType: 'module',
       },
+      globals: {
+        process: true,
+      },
     },
     {
       files: ['server/**/*.js'],

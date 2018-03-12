@@ -5,15 +5,19 @@ import { split } from 'apollo-link';
 import { getMainDefinition } from 'apollo-utilities';
 import { WebSocketLink } from 'apollo-link-ws';
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 const wsLink = new WebSocketLink({
-  uri: 'ws://localhost:8080/subscriptions',
+  uri: isProduction
+    ? 'ws://now:80/subscriptions'
+    : 'ws://localhost:8080/subscriptions',
   options: {
     reconnect: true,
   },
 });
 
 const httpLink = new HttpLink({
-  uri: 'http://localhost:8080/graphql',
+  uri: isProduction ? 'http://now:80/graphql' : 'http://localhost:8080/graphql',
 });
 
 const link = split(

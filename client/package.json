@@ -4,7 +4,8 @@
   "scripts": {
     "build": "nwb build-react-app",
     "clean": "nwb clean-app",
-    "start": "nwb serve-react-app"
+    "start": "nwb serve-react-app",
+    "deploy": "npm run build && now deploy dist --local-config now.json"
   },
   "dependencies": {
     "apollo-client-preset": "^1.0.8",
