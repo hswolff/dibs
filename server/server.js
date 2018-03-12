@@ -9,7 +9,7 @@ const http = require('http');
 const db = require('./db');
 const executableSchema = require('./graphql');
 
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 
 let retryCount = 0;
 

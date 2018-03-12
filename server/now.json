@@ -1,0 +1,8 @@
+{
+  "name": "dibs-server",
+  "alias": "dibs-server",
+  "dotenv": ".env.production",
+  "env": {
+    "DATABASE_NAME": "test"
+  }
+}
