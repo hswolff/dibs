@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
@@ -8,6 +9,11 @@ import viewer from '../services/viewer';
 const Enter = 13;
 
 class CreateNewDib extends Component {
+  static propTypes = {
+    createDib: PropTypes.func.isRequired,
+    onSuccess: PropTypes.func.isRequired,
+  };
+
   state = {
     title: '',
     error: null,

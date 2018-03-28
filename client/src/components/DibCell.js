@@ -1,10 +1,18 @@
 import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import RelativeTime from './RelativeTime';
 
 class DibCell extends Component {
+  static propTypes = {
+    callDibs: PropTypes.func.isRequired,
+    id: PropTypes.string.isRequired,
+    viewer: PropTypes.string.isRequired,
+    canBeClaimed: PropTypes.bool.isRequired,
+  };
+
   state = {
     error: null,
   };
