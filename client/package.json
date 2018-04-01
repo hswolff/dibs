@@ -15,9 +15,9 @@
     "graphql": "^0.13.2",
     "graphql-tag": "^2.8.0",
     "prop-types": "^15.6.1",
-    "react": "^16.2.0",
+    "react": "^16.3.0",
     "react-apollo": "^2.1.1",
-    "react-dom": "^16.2.0",
+    "react-dom": "^16.3.0",
     "react-emotion": "^9.1.0",
     "subscriptions-transport-ws": "^0.9.7",
     "timeago.js": "^3.0.2",
@@ -25,7 +25,7 @@
     "typography-theme-moraga": "^0.15.10"
   },
   "devDependencies": {
-    "nwb": "^0.21.5"
+    "nwb": "^0.22.0"
   },
   "license": "MIT"
 }
