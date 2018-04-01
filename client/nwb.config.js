@@ -10,10 +10,10 @@ module.exports = {
         'emotion',
         isProduction
           ? {
-            hoist: true,
-            extractStatic: true,
-            outputDir: '',
-          }
+              hoist: true,
+              extractStatic: true,
+              outputDir: '.emotion',
+            }
           : { sourceMap: true, autoLabel: true },
       ],
     ],
