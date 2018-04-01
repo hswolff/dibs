@@ -7,7 +7,8 @@
     "server": "nodemon server/server.js",
     "start": "npm-run-all --parallel client server",
     "lint": "eslint client server",
-    "format": "prettier --write \"client/src/**/*.js\" \"server/**/*.js\""
+    "format": "prettier --write \"client/src/**/*.js\" \"server/**/*.js\"",
+    "update-deps": "npm install && cd client && npm install && cd ../server && npm install && cd .."
   },
   "devDependencies": {
     "babel-eslint": "^8.2.2",
