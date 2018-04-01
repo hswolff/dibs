@@ -14,7 +14,11 @@ module.exports = {
               extractStatic: true,
               outputDir: '.emotion',
             }
-          : { sourceMap: true, autoLabel: true },
+          : {
+              sourceMap: true,
+              autoLabel: true,
+              labelFormat: '[filename]--[local]',
+            },
       ],
     ],
   },
