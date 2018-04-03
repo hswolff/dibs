@@ -8,18 +8,12 @@
     "deploy": "npm run build && now deploy dist --local-config now.json"
   },
   "dependencies": {
-    "apollo-client-preset": "^1.0.8",
-    "apollo-link-ws": "^1.0.7",
     "babel-plugin-emotion": "^9.1.0",
     "emotion": "^9.1.0",
-    "graphql": "^0.13.2",
-    "graphql-tag": "^2.8.0",
     "prop-types": "^15.6.1",
     "react": "^16.3.0",
-    "react-apollo": "^2.1.1",
     "react-dom": "^16.3.0",
     "react-emotion": "^9.1.0",
-    "subscriptions-transport-ws": "^0.9.7",
     "timeago.js": "^3.0.2",
     "typography": "^0.16.6",
     "typography-theme-moraga": "^0.15.10"
