@@ -1,45 +1,30 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import gql from 'graphql-tag';
-import { graphql } from 'react-apollo';
 import styled from 'react-emotion';
 
+import api from '../services/api';
 import viewer from '../services/viewer';
 
 import SignIn from './SignIn';
 import CreateNewDib from './CreateNewDib';
 import DibCell from './DibCell';
 
-class HomePage extends Component {
-  static propTypes = {
-    dibs: PropTypes.array.isRequired,
-    loading: PropTypes.bool.isRequired,
-    subscribeToNewComments: PropTypes.func.isRequired,
-  };
-
-  static defaultProps = {
+export default class HomePage extends Component {
+  state = {
+    showCreateNew: false,
     dibs: [],
   };
 
-  state = {
-    showCreateNew: false,
+  componentDidMount = async () => {
+    const result = await api.getDibs();
+    this.setState({ dibs: result.data });
   };
-
-  componentWillMount() {
-    this.props.subscribeToNewComments();
-  }
 
   onViewerStateChange = () => {
     this.setState({ showCreateNew: false });
   };
 
   render() {
-    const { showCreateNew } = this.state;
-    const { dibs, loading } = this.props;
-
-    if (loading) {
-      return null;
-    }
+    const { showCreateNew, dibs } = this.state;
 
     const isSignedIn = viewer.isSignedIn();
     const viewerUsername = viewer.getUsername();
@@ -74,7 +59,7 @@ class HomePage extends Component {
           )}
         {dibs.map(dib => (
           <DibCell
-            key={dib.id}
+            key={dib._id}
             canBeClaimed={isSignedIn}
             viewer={viewerUsername}
             {...dib}
@@ -115,74 +100,3 @@ const ShowCreateNew = styled('div')`
   margin: 0 10px;
   font-weight: 800;
 `;
-
-const DIBS_SUBSCRIPTION = gql`
-  subscription OnDibChanged {
-    dibChanged {
-      type
-      dib {
-        creator
-        id
-        title
-        createdAt
-        updatedAt
-        claimed {
-          user
-          time
-        }
-      }
-    }
-  }
-`;
-
-const DIBS_QUERY = gql`
-  query AllDibs {
-    dibs {
-      creator
-      id
-      title
-      createdAt
-      updatedAt
-      claimed {
-        user
-        time
-      }
-    }
-  }
-`;
-
-export default graphql(DIBS_QUERY, {
-  props: ({ data: { dibs, loading, subscribeToMore } }) => ({
-    dibs,
-    loading,
-    subscribeToNewComments: () => {
-      return subscribeToMore({
-        document: DIBS_SUBSCRIPTION,
-        updateQuery: (prev, { subscriptionData }) => {
-          if (!subscriptionData.data) {
-            return prev;
-          }
-
-          const { dib, type } = subscriptionData.data.dibChanged;
-
-          if (type === 'update') {
-            return {
-              ...prev,
-              dibs: prev.dibs.map(prevDib => {
-                if (prevDib.id === dib.id) {
-                  return dib;
-                }
-                return prevDib;
-              }),
-            };
-          }
-
-          return {
-            ...prev,
-            dibs: [dib, ...prev.dibs],
-          };
-        },
-      });
-    },
-  }),
-})(HomePage);

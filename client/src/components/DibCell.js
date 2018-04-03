@@ -1,14 +1,13 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
-import gql from 'graphql-tag';
-import { graphql } from 'react-apollo';
+
+import api from '../services/api';
 import RelativeTime from './RelativeTime';
 
-class DibCell extends Component {
+export default class DibCell extends Component {
   static propTypes = {
-    callDibs: PropTypes.func.isRequired,
-    id: PropTypes.string.isRequired,
+    _id: PropTypes.string.isRequired,
     viewer: PropTypes.string.isRequired,
     canBeClaimed: PropTypes.bool.isRequired,
     title: PropTypes.string.isRequired,
@@ -17,19 +16,19 @@ class DibCell extends Component {
     claimed: PropTypes.shape({
       time: PropTypes.string,
       user: PropTypes.string,
-    }).isRequired,
+    }),
   };
 
   state = {
     error: null,
   };
 
-  callDibs = async () => {
+  claimDib = async () => {
     this.setState({ error: null });
 
     try {
-      await this.props.callDibs({
-        id: this.props.id,
+      await api.claimDib({
+        id: this.props._id,
         user: this.props.viewer,
       });
     } catch (error) {
@@ -50,7 +49,7 @@ class DibCell extends Component {
 
     const isSignedIn = viewer != null;
 
-    const isClaimed = claimed.user != null;
+    const isClaimed = claimed && claimed.user != null;
 
     return (
       <Fragment>
@@ -68,7 +67,7 @@ class DibCell extends Component {
           </Left>
           <Right>
             <ClaimedButton
-              onClick={this.callDibs}
+              onClick={this.claimDib}
               claimed={isClaimed}
               disabled={!canBeClaimed || isClaimed}
             >
@@ -129,26 +128,3 @@ const ClaimedButton = styled('button')`
   width: 100%;
   font-size: ${props => (props.claimed ? 'inherit' : '50px')};
 `;
-
-const CLAIM_MUTATION = gql`
-  mutation ClaimDib($id: ID!, $user: String!) {
-    claimDib(id: $id, user: $user) {
-      id
-      creator
-      title
-      claimed {
-        user
-        time
-      }
-    }
-  }
-`;
-
-export default graphql(CLAIM_MUTATION, {
-  props: ({ mutate }) => ({
-    callDibs: ({ id, user }) =>
-      mutate({
-        variables: { id, user },
-      }),
-  }),
-})(DibCell);
