@@ -1,13 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const { graphqlExpress, graphiqlExpress } = require('apollo-server-express');
-const { execute, subscribe } = require('graphql');
-const { SubscriptionServer } = require('subscriptions-transport-ws');
 const http = require('http');
+const socketIo = require('socket.io');
 
 const db = require('./db');
-const executableSchema = require('./graphql');
+const createApi = require('./api');
 
 const PORT = process.env.PORT || 8080;
 
@@ -16,8 +14,11 @@ let retryCount = 0;
 async function createServer() {
   const app = express();
 
+  const httpServer = http.Server(app);
+  const io = socketIo(httpServer);
+
   try {
-    await db.connect();
+    await db.connect({ io });
   } catch (error) {
     console.error('Unable to connect to mongodb', error);
     if (++retryCount < 3) {
@@ -28,37 +29,12 @@ async function createServer() {
     process.exit(1);
   }
 
-  app.use(
-    '/graphql',
-    cors(),
-    bodyParser.json(),
-    graphqlExpress({ schema: executableSchema, context: { Models: db.Models } })
-  );
+  app.use(cors(), bodyParser.json());
 
-  app.use(
-    '/graphiql',
-    graphiqlExpress({
-      endpointURL: '/graphql',
-      subscriptionsEndpoint: `ws://localhost:${PORT}/subscriptions`,
-    })
-  );
+  app.use('/api', createApi({ Models: db.Models }));
 
-  const ws = http.createServer(app);
-  ws.listen(PORT, () => {
+  httpServer.listen(PORT, () => {
     console.log(`Server ready at http://localhost:${PORT}/`);
-
-    // Set up the WebSocket for handling GraphQL subscriptions
-    new SubscriptionServer(
-      {
-        execute,
-        subscribe,
-        schema: executableSchema,
-      },
-      {
-        server: ws,
-        path: '/subscriptions',
-      }
-    );
   });
 }
 

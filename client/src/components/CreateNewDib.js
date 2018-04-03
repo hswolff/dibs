@@ -1,16 +1,14 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'react-emotion';
-import gql from 'graphql-tag';
-import { graphql } from 'react-apollo';
 
+import api from '../services/api';
 import viewer from '../services/viewer';
 
 const Enter = 13;
 
-class CreateNewDib extends Component {
+export default class CreateNewDib extends Component {
   static propTypes = {
-    createDib: PropTypes.func.isRequired,
     onSuccess: PropTypes.func.isRequired,
   };
 
@@ -34,7 +32,7 @@ class CreateNewDib extends Component {
     const viewerUsername = viewer.getUsername();
 
     try {
-      await this.props.createDib({
+      await api.createDib({
         title: this.state.title,
         creator: viewerUsername,
       });
@@ -103,28 +101,3 @@ const Right = styled('div')`
 const Button = styled('button')`
   height: 100%;
 `;
-
-const CREATE_MUTATION = gql`
-  mutation CreateQuery($title: String!, $creator: String!) {
-    createDib(creator: $creator, title: $title) {
-      creator
-      id
-      title
-      createdAt
-      updatedAt
-      claimed {
-        user
-        time
-      }
-    }
-  }
-`;
-
-export default graphql(CREATE_MUTATION, {
-  props: ({ mutate }) => ({
-    createDib: ({ title, creator }) =>
-      mutate({
-        variables: { title, creator },
-      }),
-  }),
-})(CreateNewDib);

@@ -17,5 +17,8 @@
     "nodemon": "^1.17.2",
     "npm-run-all": "^4.1.2",
     "prettier": "^1.11.1"
+  },
+  "dependencies": {
+    "socket.io": "^2.1.0"
   }
 }
