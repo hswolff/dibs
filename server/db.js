@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const pubsub = require('./graphql/pubsub');
 const Models = require('./models');
 
 // Database Name
@@ -19,7 +18,7 @@ async function connect() {
     fullDocument: 'updateLookup',
   });
   dibChangeStream.on('change', result => {
-    pubsub.publish('dibChanged', {
+    console.log('changeEvent', {
       dibChanged: {
         type: result.operationType,
         dib: {

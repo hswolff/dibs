@@ -1,14 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const { graphqlExpress, graphiqlExpress } = require('apollo-server-express');
-const { execute, subscribe } = require('graphql');
-const { SubscriptionServer } = require('subscriptions-transport-ws');
-const http = require('http');
 
 const db = require('./db');
 const createApi = require('./api');
-const executableSchema = require('./graphql');
 
 const PORT = process.env.PORT || 8080;
 
@@ -33,35 +28,8 @@ async function createServer() {
 
   app.use('/api', createApi({ Models: db.Models }));
 
-  app.use(
-    '/graphql',
-    graphqlExpress({ schema: executableSchema, context: { Models: db.Models } })
-  );
-
-  app.use(
-    '/graphiql',
-    graphiqlExpress({
-      endpointURL: '/graphql',
-      subscriptionsEndpoint: `ws://localhost:${PORT}/subscriptions`,
-    })
-  );
-
-  const ws = http.createServer(app);
-  ws.listen(PORT, () => {
+  app.listen(PORT, () => {
     console.log(`Server ready at http://localhost:${PORT}/`);
-
-    // Set up the WebSocket for handling GraphQL subscriptions
-    new SubscriptionServer(
-      {
-        execute,
-        subscribe,
-        schema: executableSchema,
-      },
-      {
-        server: ws,
-        path: '/subscriptions',
-      }
-    );
   });
 }
 
