@@ -7,6 +7,7 @@ const { SubscriptionServer } = require('subscriptions-transport-ws');
 const http = require('http');
 
 const db = require('./db');
+const createApi = require('./api');
 const executableSchema = require('./graphql');
 
 const PORT = process.env.PORT || 8080;
@@ -28,10 +29,12 @@ async function createServer() {
     process.exit(1);
   }
 
+  app.use(cors(), bodyParser.json());
+
+  app.use('/api', createApi({ Models: db.Models }));
+
   app.use(
     '/graphql',
-    cors(),
-    bodyParser.json(),
     graphqlExpress({ schema: executableSchema, context: { Models: db.Models } })
   );
 
