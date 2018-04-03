@@ -17,10 +17,6 @@ async function createServer() {
   const httpServer = http.Server(app);
   const io = socketIo(httpServer);
 
-  io.on('connection', () => {
-    console.log('user connected');
-  });
-
   try {
     await db.connect({ io });
   } catch (error) {
