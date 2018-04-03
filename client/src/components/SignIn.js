@@ -1,8 +1,13 @@
 import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'react-emotion';
 import viewer from '../services/viewer';
 
 export default class SignIn extends Component {
+  static propTypes = {
+    onChange: PropTypes.func.isRequired,
+  };
+
   state = {
     username: '',
     error: false,

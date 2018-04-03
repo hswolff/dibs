@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import styled from 'react-emotion';
@@ -10,6 +11,12 @@ import CreateNewDib from './CreateNewDib';
 import DibCell from './DibCell';
 
 class HomePage extends Component {
+  static propTypes = {
+    dibs: PropTypes.array.isRequired,
+    loading: PropTypes.bool.isRequired,
+    subscribeToNewComments: PropTypes.func.isRequired,
+  };
+
   static defaultProps = {
     dibs: [],
   };

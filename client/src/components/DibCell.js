@@ -11,6 +11,13 @@ class DibCell extends Component {
     id: PropTypes.string.isRequired,
     viewer: PropTypes.string.isRequired,
     canBeClaimed: PropTypes.bool.isRequired,
+    title: PropTypes.string.isRequired,
+    creator: PropTypes.string.isRequired,
+    createdAt: PropTypes.string.isRequired,
+    claimed: PropTypes.shape({
+      time: PropTypes.string,
+      user: PropTypes.string,
+    }).isRequired,
   };
 
   state = {

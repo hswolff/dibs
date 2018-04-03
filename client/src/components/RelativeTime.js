@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import timeago from 'timeago.js';
 
 export default class RelativeTime extends Component {
+  static propTypes = {
+    liveUpdate: PropTypes.bool,
+    time: PropTypes.string.isRequired,
+  };
+
   static defaultProps = {
     liveUpdate: false,
   };
