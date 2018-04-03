@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const http = require('http');
+const socketIo = require('socket.io');
 
 const db = require('./db');
 const createApi = require('./api');
@@ -12,8 +14,15 @@ let retryCount = 0;
 async function createServer() {
   const app = express();
 
+  const httpServer = http.Server(app);
+  const io = socketIo(httpServer);
+
+  io.on('connection', () => {
+    console.log('user connected');
+  });
+
   try {
-    await db.connect();
+    await db.connect({ io });
   } catch (error) {
     console.error('Unable to connect to mongodb', error);
     if (++retryCount < 3) {
@@ -28,7 +37,7 @@ async function createServer() {
 
   app.use('/api', createApi({ Models: db.Models }));
 
-  app.listen(PORT, () => {
+  httpServer.listen(PORT, () => {
     console.log(`Server ready at http://localhost:${PORT}/`);
   });
 }

@@ -17,6 +17,28 @@ export default class HomePage extends Component {
   componentDidMount = async () => {
     const result = await api.getDibs();
     this.setState({ dibs: result.data });
+
+    api.subscribeToDibChanges(event => {
+      const { dib, type } = event;
+      const currentDibs = this.state.dibs;
+
+      if (type === 'update') {
+        return this.setState({
+          dibs: [
+            ...currentDibs.map(prevDib => {
+              if (prevDib._id === dib._id) {
+                return dib;
+              }
+              return prevDib;
+            }),
+          ],
+        });
+      }
+
+      return this.setState({
+        dibs: [dib, ...currentDibs],
+      });
+    });
   };
 
   onViewerStateChange = () => {

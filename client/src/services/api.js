@@ -1,6 +1,13 @@
-const baseUrl = 'http://localhost:8080/api';
+import io from 'socket.io-client';
+
+function createSocket() {
+  const socket = io(baseUrl);
+  return socket;
+}
+
+const baseUrl = 'http://localhost:8080';
 function fetchWrapper(apiPath, options) {
-  return fetch(`${baseUrl}${apiPath}`, options).then(res => res.json());
+  return fetch(`${baseUrl}/api${apiPath}`, options).then(res => res.json());
 }
 
 export default {
@@ -31,5 +38,9 @@ export default {
         user,
       }),
     });
+  },
+
+  subscribeToDibChanges(cb) {
+    createSocket().on('dib changeEvent', cb);
   },
 };
