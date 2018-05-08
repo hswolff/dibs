@@ -50,3 +50,13 @@ Keep the process open.
 ```
 npm start
 ```
+
+## Features TODO
+
+* Location of Dib.
+* Price/bounty of Dib.
+* Auth with Google
+* Real-time comments on a Dib
+* Able to edit Dibs that you created.
+* Able to un-claim a Dib if you're the creator of the dib.
+* Steal more features from eBay.
