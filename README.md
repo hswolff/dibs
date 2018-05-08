@@ -17,8 +17,8 @@ an app for offering things up and letting people call dibs on it
 
 #### You'll need to have already installed
 
-1. MongoDB 3.6+
-2. Node 8+
+1.  MongoDB 3.6+
+2.  Node 8+
 
 #### Instantiate the database
 
@@ -40,7 +40,7 @@ npm install
 #### Start Mongo
 
 ```
-mongod --port 27017 --dbpath $(pwd)/db --replSet rs0
+npm run mongo
 ```
 
 Keep the process open.
