@@ -8,15 +8,15 @@
     "deploy": "npm run build && now deploy dist --local-config now.json"
   },
   "dependencies": {
-    "babel-plugin-emotion": "^9.1.0",
-    "emotion": "^9.1.0",
+    "babel-plugin-emotion": "^9.1.2",
+    "emotion": "^9.1.3",
     "prop-types": "^15.6.1",
-    "react": "^16.3.0",
-    "react-dom": "^16.3.0",
-    "react-emotion": "^9.1.0",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-emotion": "^9.1.3",
     "socket.io-client": "^2.1.0",
     "timeago.js": "^3.0.2",
-    "typography": "^0.16.6",
+    "typography": "^0.16.17",
     "typography-theme-moraga": "^0.15.10"
   },
   "devDependencies": {
