@@ -4,11 +4,10 @@ const Models = require('./models');
 // Database Name
 const dbName = 'dibs';
 
-// Connection URL
-const url = `mongodb://localhost:27017/${dbName}`;
+const dbUri = process.env.DB_URI || 'mongodb://localhost:27017/';
 
 async function connect({ io }) {
-  await mongoose.connect(url);
+  await mongoose.connect(`${dbUri}/${dbName}`);
 
   // Little hack to ensure that the DB exists so we can attach a changeStream watcher to it.
   const item = await Models.Dib.create({ title: 'dummy', creator: 'dummy' });

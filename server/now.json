@@ -3,6 +3,6 @@
   "alias": "dibs-server",
   "dotenv": ".env.production",
   "env": {
-    "DATABASE_NAME": "test"
+    "DB_URI": "@mongodb-dibs-uri"
   }
 }
