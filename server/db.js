@@ -4,7 +4,7 @@ const Models = require('./models');
 // Database Name
 const dbName = 'dibs';
 
-const dbUri = process.env.DB_URI || 'mongodb://localhost:27017/';
+const dbUri = process.env.DB_URI || 'mongodb://localhost:27017';
 
 async function connect({ io }) {
   await mongoose.connect(`${dbUri}/${dbName}`);
