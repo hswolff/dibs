@@ -35,7 +35,7 @@ module.exports = {
       },
     },
     {
-      files: ['server/**/*.js'],
+      files: ['**/server/**/*.js'],
       env: {
         browser: false,
         commonjs: true,
