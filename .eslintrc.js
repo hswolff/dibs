@@ -16,7 +16,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['client/**/*.js'],
+      files: ['**/client/**/*.js'],
       env: {
         browser: true,
         commonjs: false,
