@@ -35,7 +35,11 @@ export default class HomePage extends Component {
         <SignIn username={username} onUsernameChange={this.onUsernameChange} />
         <br />
         <CreateNewDib onSuccess={this.loadDibs} username={username} />
-        <div>{dibs.map(dib => <DibCell key={dib._id} {...dib} />)}</div>
+        <div>
+          {dibs.map(dib => (
+            <DibCell key={dib._id} {...dib} username={username} />
+          ))}
+        </div>
       </div>
     );
   }

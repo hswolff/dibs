@@ -20,4 +20,16 @@ export default {
       }),
     });
   },
+
+  claimDib({ id, user }) {
+    return fetchWrapper(`/dibs/${id}`, {
+      method: 'PUT',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        user,
+      }),
+    });
+  },
 };
