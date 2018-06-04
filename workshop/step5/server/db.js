@@ -26,8 +26,22 @@ exports.Models = Models;
 
 const dbUri = 'mongodb://localhost:27017/dibs';
 
-async function connect() {
+async function connect(io) {
   await mongoose.connect(dbUri);
   console.log('Connected to MongoDB');
+
+  const dibChangeStream = Models.Dib.collection.watch({
+    fullDocument: 'updateLookup',
+  });
+  dibChangeStream.on('change', result => {
+    io.emit('dib changeEvent', {
+      type: result.operationType,
+      dib: {
+        claimed: {},
+        ...result.fullDocument,
+        id: result.fullDocument._id,
+      },
+    });
+  });
 }
 exports.connect = connect;
