@@ -28,5 +28,39 @@ module.exports = function createApi({ Models }) {
     });
   });
 
+  // Claim a Dib
+  api.put('/dibs/:dibId', async (req, res) => {
+    const { dibId } = req.params;
+    const { user } = req.body;
+
+    if (!user) {
+      return res.status(500).json({
+        error: 'No "user" given to claim Dib.',
+      });
+    }
+
+    let dib;
+    try {
+      dib = await Models.Dib.findById(dibId);
+    } catch (error) {
+      return res.status(500).json({
+        error: 'Cannot find Dib with given id',
+      });
+    }
+
+    if (dib.claimed.user) {
+      return res.status(500).json({
+        error: 'Dib has already been claimed!',
+      });
+    }
+
+    dib.claimed.user = user;
+    dib.claimed.time = new Date();
+
+    res.json({
+      data: await dib.save(),
+    });
+  });
+
   return api;
 };
