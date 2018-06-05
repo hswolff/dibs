@@ -1,6 +1,0 @@
-/coverage
-/dist
-/node_modules
-npm-debug.log*
-*.emotion.css
-/.emotion
