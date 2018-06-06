@@ -10,6 +10,10 @@ const dibScheme = new mongoose.Schema(
       type: String,
       required: true,
     },
+    claimed: {
+      user: String,
+      time: Date,
+    },
   },
   { timestamps: true }
 );
