@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import api from '../services/api';
 import DibCell from './DibCell';
 import CreateNewDib from './CreateNewDib';
+import SignIn from './SignIn';
 
 export default class HomePage extends Component {
   state = {
     dibs: [],
+    username: localStorage.getItem('username'),
   };
 
   componentDidMount = () => {
@@ -17,15 +19,22 @@ export default class HomePage extends Component {
     this.setState({ dibs: result.data });
   };
 
+  onUsernameChange = username => {
+    localStorage.setItem('username', username);
+    this.setState({ username });
+  };
+
   render() {
-    const { dibs } = this.state;
+    const { dibs, username } = this.state;
 
     return (
       <div>
         <header>
           <h1>Got Dibs?</h1>
         </header>
-        <CreateNewDib onSuccess={this.loadDibs} />
+        <SignIn username={username} onUsernameChange={this.onUsernameChange} />
+        <br />
+        <CreateNewDib onSuccess={this.loadDibs} username={username} />
         <div>{dibs.map(dib => <DibCell key={dib._id} {...dib} />)}</div>
       </div>
     );

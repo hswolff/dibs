@@ -15,7 +15,7 @@ export default class CreateNewDib extends Component {
     try {
       await api.createDib({
         title: this.state.title,
-        creator: 'Fake Creator',
+        creator: this.props.username,
       });
 
       this.setState({ title: '' });
