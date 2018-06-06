@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const http = require('http');
+const socketIo = require('socket.io');
 
 const db = require('./db');
 const createApi = require('./api');
@@ -13,8 +15,11 @@ async function createServer() {
 
   app.use(cors(), bodyParser.json());
 
+  const httpServer = http.Server(app);
+  const io = socketIo(httpServer);
+
   try {
-    await db.connect();
+    await db.connect(io);
   } catch (error) {
     console.error(error.message);
     console.error('Closing server');
@@ -27,7 +32,7 @@ async function createServer() {
 
   app.use('/api', createApi({ Models: db.Models }));
 
-  app.listen(PORT, () => {
+  httpServer.listen(PORT, () => {
     console.log(`Server ready at ${DOMAIN}:${PORT}/`);
   });
 }
