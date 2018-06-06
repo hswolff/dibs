@@ -27,3 +27,10 @@
     flex-direction: column;
     justify-content: space-between;
 }
+
+.dib-claim-button {
+    height: 100%;
+    width: 100%;
+    font-size: 50px;
+    cursor: pointer;
+}
