@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import api from '../services/api';
 import DibCell from './DibCell';
+import CreateNewDib from './CreateNewDib';
 
 export default class HomePage extends Component {
   state = {
     dibs: [],
   };
 
-  componentDidMount = async () => {
+  componentDidMount = () => {
+    this.loadDibs();
+  };
+
+  loadDibs = async () => {
     const result = await api.getDibs();
     this.setState({ dibs: result.data });
   };
@@ -20,6 +25,7 @@ export default class HomePage extends Component {
         <header>
           <h1>Got Dibs?</h1>
         </header>
+        <CreateNewDib onSuccess={this.loadDibs} />
         <div>{dibs.map(dib => <DibCell key={dib._id} {...dib} />)}</div>
       </div>
     );
