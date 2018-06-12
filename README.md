@@ -53,6 +53,7 @@ npm start
 
 ## Features TODO
 
+* Add spinner when a user creates a dib, and when a user claims a dib
 * Location of Dib.
 * Price/bounty of Dib.
 * Auth with Google
