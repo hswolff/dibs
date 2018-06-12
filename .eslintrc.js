@@ -32,6 +32,7 @@ module.exports = {
       },
       globals: {
         process: true,
+        __API_URL__: true,
       },
     },
     {

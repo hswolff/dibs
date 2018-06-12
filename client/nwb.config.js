@@ -22,4 +22,9 @@ module.exports = {
       ],
     ],
   },
+  webpack: {
+    define: {
+      __API_URL__: JSON.stringify(process.env.API_URL),
+    },
+  },
 };

@@ -5,7 +5,7 @@ function createSocket() {
   return socket;
 }
 
-const baseUrl = 'http://localhost:8080';
+const baseUrl = __API_URL__ || 'http://localhost:8080';
 function fetchWrapper(apiPath, options) {
   return fetch(`${baseUrl}/api${apiPath}`, options).then(res => res.json());
 }

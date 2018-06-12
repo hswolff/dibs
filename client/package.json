@@ -5,7 +5,7 @@
     "build": "nwb build-react-app",
     "clean": "nwb clean-app",
     "start": "nwb serve-react-app",
-    "deploy": "npm run build && now deploy dist --local-config now.json"
+    "deploy": "API_URL=https://dibs-server.now.sh npm run build && now deploy dist --name dibs --local-config now.json"
   },
   "dependencies": {
     "babel-plugin-emotion": "^9.1.2",
