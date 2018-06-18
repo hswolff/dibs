@@ -4,6 +4,7 @@ import styled from 'react-emotion';
 
 import api from '../services/api';
 import RelativeTime from './RelativeTime';
+import Loader from './Loader';
 
 export default class DibCell extends Component {
   static propTypes = {
@@ -21,10 +22,11 @@ export default class DibCell extends Component {
 
   state = {
     error: null,
+    claiming: false,
   };
 
   claimDib = async () => {
-    this.setState({ error: null });
+    this.setState({ error: null, claiming: true });
 
     try {
       await api.claimDib({
@@ -34,10 +36,12 @@ export default class DibCell extends Component {
     } catch (error) {
       this.setState({ error: error.message });
     }
+
+    this.setState({ claiming: false });
   };
 
   render() {
-    const { error } = this.state;
+    const { error, claiming } = this.state;
     const {
       viewer,
       canBeClaimed,
@@ -71,7 +75,7 @@ export default class DibCell extends Component {
               claimed={isClaimed}
               disabled={!canBeClaimed || isClaimed}
             >
-              {isClaimed ? 'Claimed!' : 'Dibs?'}
+              {claiming ? <Loader /> : isClaimed ? 'Claimed!' : 'Dibs?'}
             </ClaimedButton>
             {isClaimed && (
               <div>

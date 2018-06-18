@@ -4,6 +4,7 @@ import styled from 'react-emotion';
 
 import api from '../services/api';
 import viewer from '../services/viewer';
+import Loader from './Loader';
 
 const Enter = 13;
 
@@ -15,6 +16,7 @@ export default class CreateNewDib extends Component {
   state = {
     title: '',
     error: null,
+    showLoader: false,
   };
 
   onKeyDown = e => {
@@ -27,7 +29,7 @@ export default class CreateNewDib extends Component {
   createNew = async e => {
     e.preventDefault();
 
-    this.setState({ error: null });
+    this.setState({ error: null, showLoader: true });
 
     const viewerUsername = viewer.getUsername();
 
@@ -37,16 +39,16 @@ export default class CreateNewDib extends Component {
         creator: viewerUsername,
       });
 
-      this.setState({ title: '' });
+      this.setState({ title: '', showLoader: false });
 
       this.props.onSuccess();
     } catch (error) {
-      this.setState({ error: error.message });
+      this.setState({ error: error.message, showLoader: false });
     }
   };
 
   render() {
-    const { error, title } = this.state;
+    const { error, title, showLoader } = this.state;
 
     return (
       <Fragment>
@@ -63,7 +65,12 @@ export default class CreateNewDib extends Component {
             />
           </Left>
           <Right>
-            <Button onClick={this.createNew}>Create New Dib</Button>
+            <Button
+              disabled={showLoader || title === ''}
+              onClick={this.createNew}
+            >
+              {showLoader ? <Loader /> : 'Create New Dib'}
+            </Button>
           </Right>
         </Container>
       </Fragment>
