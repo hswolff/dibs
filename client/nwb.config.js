@@ -11,7 +11,8 @@ module.exports = {
         isProduction
           ? {
               hoist: true,
-              extractStatic: true,
+              // seems to be broken and is not recommended.
+              extractStatic: false,
               outputDir: '.emotion',
             }
           : {
