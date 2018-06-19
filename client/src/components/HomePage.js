@@ -6,7 +6,7 @@ import SignIn from './SignIn';
 
 export default class HomePage extends Component {
   state = {
-    username: localStorage.getItem('username'),
+    username: localStorage.getItem('username') || 'Default User',
   };
 
   componentDidMount = () => {
@@ -17,8 +17,9 @@ export default class HomePage extends Component {
     // TODO: Load all data and save it in state.
   };
 
-  onUsernameChange = () => {
-    // TODO: Handle when a user signs in.
+  onUsernameChange = username => {
+    localStorage.setItem('username', username);
+    this.setState({ username });
   };
 
   render() {
@@ -31,7 +32,7 @@ export default class HomePage extends Component {
         </header>
         <SignIn username={username} onUsernameChange={this.onUsernameChange} />
         <br />
-        <CreateNewDib onSuccess={this.loadDibs} />
+        <CreateNewDib onSuccess={this.loadDibs} username={username} />
         <div>{/* TODO: Render all dibs. */}</div>
       </div>
     );

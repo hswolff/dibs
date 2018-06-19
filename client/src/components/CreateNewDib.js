@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import api from '../services/api';
 
 export default class CreateNewDib extends Component {
   state = {
@@ -9,7 +10,20 @@ export default class CreateNewDib extends Component {
   createNew = async e => {
     e.preventDefault();
 
-    // TODO: Make API call to create dib.
+    this.setState({ error: null });
+
+    try {
+      await api.createDib({
+        title: this.state.title,
+        creator: this.props.username,
+      });
+
+      this.setState({ title: '' });
+
+      this.props.onSuccess();
+    } catch (error) {
+      this.setState({ error: error.message });
+    }
   };
 
   render() {

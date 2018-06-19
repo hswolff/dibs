@@ -1,9 +1,5 @@
 const mongoose = require('mongoose');
 
-// TODO: Update schema with claimed information.
-// TODO: Open Change Stream to watch for changes.
-// TODO: Push changes from change stream to the client.
-
 const dibScheme = new mongoose.Schema(
   {
     title: {
@@ -14,6 +10,7 @@ const dibScheme = new mongoose.Schema(
       type: String,
       required: true,
     },
+    // TODO: Update schema with claimed information.
   },
   { timestamps: true }
 );
@@ -29,5 +26,8 @@ const dbUri = 'mongodb://localhost:27017/dibs';
 async function connect() {
   await mongoose.connect(dbUri);
   console.log('Connected to MongoDB');
+
+  // TODO: Open Change Stream to watch for changes.
+  // TODO: Push changes from change stream to the client.
 }
 exports.connect = connect;
